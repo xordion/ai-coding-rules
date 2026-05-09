@@ -5,7 +5,7 @@
 
 ## Communication & Behavior
 
-- Prefer Chinese by default; switch to the user's language or project context when needed.
+- Prefer English by default; switch to the user's language or project context when needed.
 - No speculation: when uncertain, ask the user for confirmation.
 - Think before answering; explain design and test strategy before outputting code.
 
@@ -18,16 +18,6 @@
 - Prioritize maintainable, testable, evolvable code.
 - Reject requirements that violate principles and propose safer alternatives.
 - Refactor continuously; flag and fix code smells when they affect the work.
-
-## AI Change Records
-
-- By default, record AI changes in `docs/ai-changes-<requirement-name>.md`.
-- Use `docs/ai-changes-other.md` only for miscellaneous changes that clearly do not affect behavior.
-- Functional code, business behavior, API behavior, data processing, call chains, rules, or refactors must not be recorded as `other`.
-- If the requirement name is unclear and a new file is needed, ask the user first.
-- If the conversation switches to a new requirement, notify the user before continuing.
-- New and appended AI change records must be written in Chinese.
-- `docs/ai-changes.md` is legacy history only.
 
 ## Naming & Call Chain
 

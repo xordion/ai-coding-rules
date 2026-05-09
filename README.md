@@ -5,7 +5,15 @@ team projects.
 
 ## Install
 
-Install directly from GitHub without cloning this repository:
+Install directly from GitHub without cloning this repository.
+Run from your target project root:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/xordion/ai-coding-rules/main/scripts/install-codex-rules.sh \
+  | bash -s -- --profile frontend
+```
+
+If you need to install into a different project directory, pass it explicitly:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/xordion/ai-coding-rules/main/scripts/install-codex-rules.sh \
@@ -22,8 +30,11 @@ curl -fsSL https://raw.githubusercontent.com/xordion/ai-coding-rules/main/script
 If you already cloned the repository, you can run the local script:
 
 ```bash
-bash scripts/install-codex-rules.sh --project-root /path/to/project --profile frontend
+bash scripts/install-codex-rules.sh --profile frontend
 ```
+
+Run the local script from the target project root too, or add `--project-root
+/path/to/project` when running it from another directory.
 
 This installs:
 

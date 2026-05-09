@@ -15,7 +15,11 @@ bash "$ROOT_DIR/scripts/install-codex-rules.sh" \
   --profile frontend \
   --skills-target project
 
-grep -Fq "Prefer Chinese by default" "$CODEX_HOME/AGENTS.md"
+grep -Fq "Prefer English by default" "$CODEX_HOME/AGENTS.md"
+if grep -Fq "## AI Change Records" "$CODEX_HOME/AGENTS.md"; then
+  echo "Generated global AGENTS.md should not include AI Change Records" >&2
+  exit 1
+fi
 grep -Fq "Before creating a git commit" "$CODEX_HOME/AGENTS.md"
 grep -Fq "Review Impact Before Coding" "$PROJECT_ROOT/AGENTS.md"
 grep -Fq "Playwright Test Generation" "$PROJECT_ROOT/AGENTS.md"
@@ -51,7 +55,11 @@ bash -s -- \
   --profile frontend \
   --skills-target project < "$ROOT_DIR/scripts/install-codex-rules.sh"
 
-grep -Fq "Prefer Chinese by default" "$REMOTE_CODEX_HOME/AGENTS.md"
+grep -Fq "Prefer English by default" "$REMOTE_CODEX_HOME/AGENTS.md"
+if grep -Fq "## AI Change Records" "$REMOTE_CODEX_HOME/AGENTS.md"; then
+  echo "Generated remote global AGENTS.md should not include AI Change Records" >&2
+  exit 1
+fi
 grep -Fq "Before creating a git commit" "$REMOTE_CODEX_HOME/AGENTS.md"
 grep -Fq "Playwright Test Generation" "$REMOTE_PROJECT_ROOT/AGENTS.md"
 if grep -Fq "{{allowed_scope}}" "$REMOTE_PROJECT_ROOT/AGENTS.md"; then

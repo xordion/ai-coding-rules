@@ -42,7 +42,9 @@ require_file "skills/playwright-test-generator/SKILL.md"
 require_contains "global-AGENTS.md" "Prefer English by default"
 require_contains "global-AGENTS.md" "TDD mandatory"
 require_contains "global-AGENTS.md" "This gate is an agent workflow requirement, not an automatic Git hook."
-require_contains "global-AGENTS.md" 'When the agent is asked to create a commit, perform a code review pass over the staged and unstaged changes before running `git commit`.'
+require_contains "global-AGENTS.md" 'When asked to commit, run the gate in order: review staged and unstaged changes for bugs, regressions, missing tests, unsafe behavior, and rule violations; run every relevant test against the staged commit content without relying on unstaged fixes; archive any completed OpenSpec change after verification; then run `git commit`.'
+require_contains "global-AGENTS.md" "Fix blocking findings before committing, or explicitly report why they remain unresolved."
+require_contains "global-AGENTS.md" "Do not commit when tests or review findings indicate the change is not ready."
 require_not_contains "global-AGENTS.md" "## AI Change Records"
 require_not_contains "global-AGENTS.md" "ai-changes"
 require_contains "AGENTS-template.md" "Project profile"
@@ -71,3 +73,4 @@ require_contains "README.md" "bash tests/run-tests.sh"
 require_contains "README.md" "openspec command not found"
 require_contains "README.md" "Git Commit Gate"
 require_contains "README.md" "This is an agent workflow requirement, not a Git hook."
+require_contains "README.md" 'The required order is review staged and unstaged changes, run every relevant test against staged commit content without relying on unstaged fixes, archive completed OpenSpec changes after verification, then `git commit`.'

@@ -36,8 +36,7 @@
 ## Git Commit Gate
 
 - This gate is an agent workflow requirement, not an automatic Git hook.
-- When the agent is asked to create a commit, perform a code review pass over the staged and unstaged changes before running `git commit`.
-- Prioritize bugs, regressions, missing tests, unsafe behavior, and violations of project rules.
+- When asked to commit, run the gate in order: review staged and unstaged changes for bugs, regressions, missing tests, unsafe behavior, and rule violations; run every relevant test against the staged commit content without relying on unstaged fixes; archive any completed OpenSpec change after verification; then run `git commit`.
 - Fix blocking findings before committing, or explicitly report why they remain unresolved.
 - Do not commit when tests or review findings indicate the change is not ready.
 

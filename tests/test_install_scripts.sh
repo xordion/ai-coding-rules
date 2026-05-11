@@ -32,7 +32,9 @@ if grep -Fq "## AI Change Records" "$CODEX_HOME/AGENTS.md"; then
   exit 1
 fi
 grep -Fq "This gate is an agent workflow requirement, not an automatic Git hook." "$CODEX_HOME/AGENTS.md"
-grep -Fq 'When the agent is asked to create a commit, perform a code review pass over the staged and unstaged changes before running `git commit`.' "$CODEX_HOME/AGENTS.md"
+grep -Fq 'When asked to commit, run the gate in order: review staged and unstaged changes for bugs, regressions, missing tests, unsafe behavior, and rule violations; run every relevant test against the staged commit content without relying on unstaged fixes; archive any completed OpenSpec change after verification; then run `git commit`.' "$CODEX_HOME/AGENTS.md"
+grep -Fq "Fix blocking findings before committing, or explicitly report why they remain unresolved." "$CODEX_HOME/AGENTS.md"
+grep -Fq "Do not commit when tests or review findings indicate the change is not ready." "$CODEX_HOME/AGENTS.md"
 grep -Fq "Keep existing project rule." "$PROJECT_ROOT/AGENTS.md"
 grep -Fq "Review Impact Before Coding" "$PROJECT_ROOT/AGENTS.md"
 grep -Fq "Playwright Test Generation" "$PROJECT_ROOT/AGENTS.md"
@@ -130,7 +132,9 @@ if grep -Fq "## AI Change Records" "$REMOTE_CODEX_HOME/AGENTS.md"; then
   exit 1
 fi
 grep -Fq "This gate is an agent workflow requirement, not an automatic Git hook." "$REMOTE_CODEX_HOME/AGENTS.md"
-grep -Fq 'When the agent is asked to create a commit, perform a code review pass over the staged and unstaged changes before running `git commit`.' "$REMOTE_CODEX_HOME/AGENTS.md"
+grep -Fq 'When asked to commit, run the gate in order: review staged and unstaged changes for bugs, regressions, missing tests, unsafe behavior, and rule violations; run every relevant test against the staged commit content without relying on unstaged fixes; archive any completed OpenSpec change after verification; then run `git commit`.' "$REMOTE_CODEX_HOME/AGENTS.md"
+grep -Fq "Fix blocking findings before committing, or explicitly report why they remain unresolved." "$REMOTE_CODEX_HOME/AGENTS.md"
+grep -Fq "Do not commit when tests or review findings indicate the change is not ready." "$REMOTE_CODEX_HOME/AGENTS.md"
 grep -Fq "Keep existing remote project rule." "$REMOTE_PROJECT_ROOT/AGENTS.md"
 grep -Fq "Playwright Test Generation" "$REMOTE_PROJECT_ROOT/AGENTS.md"
 if grep -Fq "{{allowed_scope}}" "$REMOTE_PROJECT_ROOT/AGENTS.md"; then

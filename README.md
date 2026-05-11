@@ -181,10 +181,10 @@ use `--skip-global`.
 
 ## Git Commit Gate
 
-The installed global rules require the agent to run a review pass before it
-creates a commit. That review covers both staged and unstaged changes, with
-attention to bugs, regressions, missing tests, unsafe behavior, and project rule
-violations.
+The installed global rules require the agent to run a commit gate before it
+creates a commit. The required order is review staged and unstaged changes, run every relevant test against staged commit content without relying on unstaged fixes, archive completed OpenSpec changes after verification, then `git commit`.
+Blocking review findings or test failures must be fixed before commit, or
+explicitly reported when unresolved.
 
 This is an agent workflow requirement, not a Git hook. If you run `git commit`
 yourself in a terminal, Git will not automatically enforce these rules.

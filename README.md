@@ -1,13 +1,15 @@
 # AI Coding Rules
 
-Shared Codex rules, OpenSpec workflow skills, and frontend verification guidance for
-team projects.
+Shared AI agent rules, OpenSpec workflow skills, and frontend verification
+guidance for team projects.
 
 ## Requirements
 
 - Bash, `curl`, `sed`, `cp`, and other standard Unix shell tools.
 - Codex reads user-level rules from `~/.codex/AGENTS.md` and project rules from
   `AGENTS.md` in the target project.
+- Cursor can use the generated `AGENTS.md` and `.cursor/rules` adapter.
+- Claude Code can use the generated `CLAUDE.md` adapter.
 - OpenSpec projects should have the `openspec` command available before running
   the OpenSpec gate.
 
@@ -25,6 +27,27 @@ This installs global Codex rules, generates project rules in the current
 directory, and installs all included skills under the project-local
 `.codex/skills` directory.
 
+Install for Cursor only:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/xordion/ai-coding-rules/main/scripts/install-codex-rules.sh \
+  | bash -s -- --agent cursor --profile frontend
+```
+
+Install for Claude Code only:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/xordion/ai-coding-rules/main/scripts/install-codex-rules.sh \
+  | bash -s -- --agent claude --profile frontend
+```
+
+Install adapters for Codex, Cursor, and Claude Code together:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/xordion/ai-coding-rules/main/scripts/install-codex-rules.sh \
+  | bash -s -- --agent all --profile frontend
+```
+
 If you need to install into a different project directory, pass it explicitly:
 
 ```bash
@@ -39,12 +62,17 @@ The full rules installer writes these files:
 - `~/.codex/AGENTS.md` from `global-AGENTS.md`, unless `--skip-global` is used.
 - `<project-root>/AGENTS.md` from `AGENTS-template.md` plus the selected rule
   profile.
+- `<project-root>/.cursor/rules/ai-coding-rules.mdc` when `--agent cursor` or
+  `--agent all` is used.
+- `<project-root>/CLAUDE.md` when `--agent claude` or `--agent all` is used.
 - `<project-root>/.codex/skills/*` when `--skills-target project` is used.
 - `~/.codex/skills/*` when `--skills-target user` is used.
 
-Existing `AGENTS.md` files are backed up before replacement with a timestamped
-`.bak.YYYYMMDDHHMMSS` suffix. Skill directories are copied into the target
-directory and may overwrite files with the same names.
+Existing `AGENTS.md` files are backed up and appended to, not replaced. The
+backup uses a timestamped `.bak.YYYYMMDDHHMMSS` suffix, then the installer adds
+a separator and the generated rules to the end of the existing file. Skill
+directories are copied into the target directory and may overwrite files with
+the same names.
 
 ## Install Options
 
@@ -59,16 +87,18 @@ Run the local script from the target project root too, or add
 
 The rules installer accepts these options:
 
+- `--agent TARGET`: `codex`, `cursor`, `claude`, or `all`. Defaults to `codex`.
 - `--project-root PATH`: project root where `AGENTS.md` is generated. Defaults
   to the current directory.
 - `--codex-home PATH`: Codex home directory. Defaults to `$CODEX_HOME` or
   `~/.codex`.
 - `--profile NAME`: `default`, `frontend`, or `all`. Defaults to `default`.
-- `--skills-target TARGET`: `project`, `user`, or `none`. Defaults to
-  `project`.
+- `--skills-target TARGET`: `project`, `user`, `none`, or `auto`. Defaults to
+  `auto`; `auto` installs Codex skills for `codex` and `all`, and skips skills
+  for `cursor` and `claude`.
 - `--raw-base-url URL`: raw file base URL. Useful for forks, pinned versions,
   or local tests.
-- `--skip-global`: do not install user-level global rules.
+- `--skip-global`: do not install Codex user-level global rules.
 
 ## Profiles
 

@@ -63,7 +63,10 @@ require_contains "README.md" "Run from your target project root:"
 require_contains "README.md" "bash -s -- --profile frontend"
 require_contains "README.md" "What gets installed"
 require_contains "README.md" "--skills-target project"
-require_contains "README.md" 'Existing `AGENTS.md` files are backed up'
+require_contains "README.md" "--agent TARGET"
+require_contains "README.md" "Cursor"
+require_contains "README.md" "Claude Code"
+require_contains "README.md" 'Existing `AGENTS.md` files are backed up and appended to, not replaced.'
 require_contains "README.md" "bash tests/run-tests.sh"
 require_contains "README.md" "openspec command not found"
 require_contains "README.md" "Git Commit Gate"

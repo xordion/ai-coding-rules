@@ -20,7 +20,8 @@ if grep -Fq "## AI Change Records" "$CODEX_HOME/AGENTS.md"; then
   echo "Generated global AGENTS.md should not include AI Change Records" >&2
   exit 1
 fi
-grep -Fq "Before creating a git commit" "$CODEX_HOME/AGENTS.md"
+grep -Fq "This gate is an agent workflow requirement, not an automatic Git hook." "$CODEX_HOME/AGENTS.md"
+grep -Fq 'When the agent is asked to create a commit, perform a code review pass over the staged and unstaged changes before running `git commit`.' "$CODEX_HOME/AGENTS.md"
 grep -Fq "Review Impact Before Coding" "$PROJECT_ROOT/AGENTS.md"
 grep -Fq "Playwright Test Generation" "$PROJECT_ROOT/AGENTS.md"
 if grep -Fq "{{allowed_scope}}" "$PROJECT_ROOT/AGENTS.md"; then
@@ -60,7 +61,8 @@ if grep -Fq "## AI Change Records" "$REMOTE_CODEX_HOME/AGENTS.md"; then
   echo "Generated remote global AGENTS.md should not include AI Change Records" >&2
   exit 1
 fi
-grep -Fq "Before creating a git commit" "$REMOTE_CODEX_HOME/AGENTS.md"
+grep -Fq "This gate is an agent workflow requirement, not an automatic Git hook." "$REMOTE_CODEX_HOME/AGENTS.md"
+grep -Fq 'When the agent is asked to create a commit, perform a code review pass over the staged and unstaged changes before running `git commit`.' "$REMOTE_CODEX_HOME/AGENTS.md"
 grep -Fq "Playwright Test Generation" "$REMOTE_PROJECT_ROOT/AGENTS.md"
 if grep -Fq "{{allowed_scope}}" "$REMOTE_PROJECT_ROOT/AGENTS.md"; then
   echo "Generated remote project AGENTS.md should not contain unresolved template placeholders" >&2

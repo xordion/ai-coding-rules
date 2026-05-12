@@ -32,9 +32,34 @@ if grep -Fq "## AI Change Records" "$CODEX_HOME/AGENTS.md"; then
   exit 1
 fi
 grep -Fq "This gate is an agent workflow requirement, not an automatic Git hook." "$CODEX_HOME/AGENTS.md"
-grep -Fq 'When asked to commit, run the gate in order: review staged and unstaged changes for bugs, regressions, missing tests, unsafe behavior, and rule violations; run every relevant test against the staged commit content without relying on unstaged fixes; archive any completed OpenSpec change after verification; then run `git commit`.' "$CODEX_HOME/AGENTS.md"
-grep -Fq "Fix blocking findings before committing, or explicitly report why they remain unresolved." "$CODEX_HOME/AGENTS.md"
-grep -Fq "Do not commit when tests or review findings indicate the change is not ready." "$CODEX_HOME/AGENTS.md"
+grep -Fq "## Git Commit Gate Is Two-Phase" "$CODEX_HOME/AGENTS.md"
+grep -Fq "### Phase 1: Prepare Gate" "$CODEX_HOME/AGENTS.md"
+grep -Fq "### Phase 2: Act On Explicit Choice" "$CODEX_HOME/AGENTS.md"
+grep -Fq "## Commit Choice Recognition" "$CODEX_HOME/AGENTS.md"
+grep -Fq "## OpenSpec Commit Archive Rule" "$CODEX_HOME/AGENTS.md"
+grep -Fq "## Commit Gate Override" "$CODEX_HOME/AGENTS.md"
+grep -Fq "full gate every time" "$CODEX_HOME/AGENTS.md"
+grep -Fq "immediately previous assistant message" "$CODEX_HOME/AGENTS.md"
+grep -Fq "staged diff fingerprint has not changed" "$CODEX_HOME/AGENTS.md"
+grep -Fq "no new unstaged changes affect the staged files" "$CODEX_HOME/AGENTS.md"
+grep -Fq "## Staged Fingerprint" "$CODEX_HOME/AGENTS.md"
+grep -Fq "git diff --cached --name-status" "$CODEX_HOME/AGENTS.md"
+grep -Fq "git diff --cached --stat" "$CODEX_HOME/AGENTS.md"
+grep -Fq "git status --short" "$CODEX_HOME/AGENTS.md"
+grep -Fq "test commands and results" "$CODEX_HOME/AGENTS.md"
+grep -Fq "If the staged set changed, rerun the gate" "$CODEX_HOME/AGENTS.md"
+grep -Fq "commit-gate request, not commit permission" "$CODEX_HOME/AGENTS.md"
+grep -Fq "Ask and stop" "$CODEX_HOME/AGENTS.md"
+grep -Fq "latest user message explicitly selects" "$CODEX_HOME/AGENTS.md"
+grep -Fq "Finding clarification is not a choice" "$CODEX_HOME/AGENTS.md"
+grep -Fq "Examples that are not approval" "$CODEX_HOME/AGENTS.md"
+grep -Fq "OpenSpec decision point" "$CODEX_HOME/AGENTS.md"
+grep -Fq "Review staged and unstaged changes" "$CODEX_HOME/AGENTS.md"
+grep -Fq "Run relevant tests against staged content without relying on unstaged fixes" "$CODEX_HOME/AGENTS.md"
+grep -Fq "Report OpenSpec archive blockers" "$CODEX_HOME/AGENTS.md"
+grep -Fq "Show review log and test results" "$CODEX_HOME/AGENTS.md"
+grep -Fq '`commit`, `commit & archive`, or `do nothing`' "$CODEX_HOME/AGENTS.md"
+grep -Fq "Do not commit while blocking findings, test failures, or unresolved archive blockers make the change unready." "$CODEX_HOME/AGENTS.md"
 grep -Fq "Keep existing project rule." "$PROJECT_ROOT/AGENTS.md"
 grep -Fq "Review Impact Before Coding" "$PROJECT_ROOT/AGENTS.md"
 grep -Fq "Playwright Test Generation" "$PROJECT_ROOT/AGENTS.md"
@@ -132,9 +157,34 @@ if grep -Fq "## AI Change Records" "$REMOTE_CODEX_HOME/AGENTS.md"; then
   exit 1
 fi
 grep -Fq "This gate is an agent workflow requirement, not an automatic Git hook." "$REMOTE_CODEX_HOME/AGENTS.md"
-grep -Fq 'When asked to commit, run the gate in order: review staged and unstaged changes for bugs, regressions, missing tests, unsafe behavior, and rule violations; run every relevant test against the staged commit content without relying on unstaged fixes; archive any completed OpenSpec change after verification; then run `git commit`.' "$REMOTE_CODEX_HOME/AGENTS.md"
-grep -Fq "Fix blocking findings before committing, or explicitly report why they remain unresolved." "$REMOTE_CODEX_HOME/AGENTS.md"
-grep -Fq "Do not commit when tests or review findings indicate the change is not ready." "$REMOTE_CODEX_HOME/AGENTS.md"
+grep -Fq "## Git Commit Gate Is Two-Phase" "$REMOTE_CODEX_HOME/AGENTS.md"
+grep -Fq "### Phase 1: Prepare Gate" "$REMOTE_CODEX_HOME/AGENTS.md"
+grep -Fq "### Phase 2: Act On Explicit Choice" "$REMOTE_CODEX_HOME/AGENTS.md"
+grep -Fq "## Commit Choice Recognition" "$REMOTE_CODEX_HOME/AGENTS.md"
+grep -Fq "## OpenSpec Commit Archive Rule" "$REMOTE_CODEX_HOME/AGENTS.md"
+grep -Fq "## Commit Gate Override" "$REMOTE_CODEX_HOME/AGENTS.md"
+grep -Fq "full gate every time" "$REMOTE_CODEX_HOME/AGENTS.md"
+grep -Fq "immediately previous assistant message" "$REMOTE_CODEX_HOME/AGENTS.md"
+grep -Fq "staged diff fingerprint has not changed" "$REMOTE_CODEX_HOME/AGENTS.md"
+grep -Fq "no new unstaged changes affect the staged files" "$REMOTE_CODEX_HOME/AGENTS.md"
+grep -Fq "## Staged Fingerprint" "$REMOTE_CODEX_HOME/AGENTS.md"
+grep -Fq "git diff --cached --name-status" "$REMOTE_CODEX_HOME/AGENTS.md"
+grep -Fq "git diff --cached --stat" "$REMOTE_CODEX_HOME/AGENTS.md"
+grep -Fq "git status --short" "$REMOTE_CODEX_HOME/AGENTS.md"
+grep -Fq "test commands and results" "$REMOTE_CODEX_HOME/AGENTS.md"
+grep -Fq "If the staged set changed, rerun the gate" "$REMOTE_CODEX_HOME/AGENTS.md"
+grep -Fq "commit-gate request, not commit permission" "$REMOTE_CODEX_HOME/AGENTS.md"
+grep -Fq "Ask and stop" "$REMOTE_CODEX_HOME/AGENTS.md"
+grep -Fq "latest user message explicitly selects" "$REMOTE_CODEX_HOME/AGENTS.md"
+grep -Fq "Finding clarification is not a choice" "$REMOTE_CODEX_HOME/AGENTS.md"
+grep -Fq "Examples that are not approval" "$REMOTE_CODEX_HOME/AGENTS.md"
+grep -Fq "OpenSpec decision point" "$REMOTE_CODEX_HOME/AGENTS.md"
+grep -Fq "Review staged and unstaged changes" "$REMOTE_CODEX_HOME/AGENTS.md"
+grep -Fq "Run relevant tests against staged content without relying on unstaged fixes" "$REMOTE_CODEX_HOME/AGENTS.md"
+grep -Fq "Report OpenSpec archive blockers" "$REMOTE_CODEX_HOME/AGENTS.md"
+grep -Fq "Show review log and test results" "$REMOTE_CODEX_HOME/AGENTS.md"
+grep -Fq '`commit`, `commit & archive`, or `do nothing`' "$REMOTE_CODEX_HOME/AGENTS.md"
+grep -Fq "Do not commit while blocking findings, test failures, or unresolved archive blockers make the change unready." "$REMOTE_CODEX_HOME/AGENTS.md"
 grep -Fq "Keep existing remote project rule." "$REMOTE_PROJECT_ROOT/AGENTS.md"
 grep -Fq "Playwright Test Generation" "$REMOTE_PROJECT_ROOT/AGENTS.md"
 if grep -Fq "{{allowed_scope}}" "$REMOTE_PROJECT_ROOT/AGENTS.md"; then
@@ -167,3 +217,30 @@ bash -s -- \
 
 test -f "$REMOTE_SKILL_TMP/openspec-plan-review/SKILL.md"
 test -f "$REMOTE_SKILL_TMP/playwright-test-generator/SKILL.md"
+
+UPDATE_PROJECT_ROOT="$TMP_DIR/update-project"
+mkdir -p "$UPDATE_PROJECT_ROOT"
+
+bash "$ROOT_DIR/scripts/install-codex-rules.sh" \
+  --project-root "$UPDATE_PROJECT_ROOT" \
+  --skip-global \
+  --profile default \
+  --skills-target project
+
+printf '\nSTALE INSTALLED CONFIG\n' >> "$UPDATE_PROJECT_ROOT/AGENTS.md"
+
+bash "$ROOT_DIR/scripts/install-codex-rules.sh" \
+  --update \
+  --project-root "$UPDATE_PROJECT_ROOT" \
+  --skip-global \
+  --profile frontend \
+  --skills-target project
+
+grep -Fq "Project profile: \`frontend\`" "$UPDATE_PROJECT_ROOT/AGENTS.md"
+grep -Fq "Playwright Test Generation" "$UPDATE_PROJECT_ROOT/AGENTS.md"
+if grep -Fq "STALE INSTALLED CONFIG" "$UPDATE_PROJECT_ROOT/AGENTS.md"; then
+  echo "Update mode should replace installed project rules instead of appending stale content" >&2
+  exit 1
+fi
+test -f "$UPDATE_PROJECT_ROOT/AGENTS.md".bak.*
+test -f "$UPDATE_PROJECT_ROOT/.codex/skills/openspec-propose/SKILL.md"

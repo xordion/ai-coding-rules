@@ -99,6 +99,8 @@ The rules installer accepts these options:
 - `--raw-base-url URL`: raw file base URL. Useful for forks, pinned versions,
   or local tests.
 - `--skip-global`: do not install Codex user-level global rules.
+- `--update`: update installed project config by backing up and replacing
+  generated files instead of appending another copy.
 
 ## Profiles
 
@@ -175,6 +177,19 @@ Re-run the installer when this repository changes or when you want a different
 profile. Review the generated `AGENTS.md` diff in the target project before
 committing it.
 
+## Update Current Project
+
+Run this from the target project root to refresh the already installed project
+rules and project-local skills:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/xordion/ai-coding-rules/main/scripts/install-codex-rules.sh \
+  | bash -s -- --update --skip-global --profile frontend --skills-target project
+```
+
+`--update` creates a timestamped backup, replaces generated project config, and
+leaves user-level global rules untouched when used with `--skip-global`.
+
 To keep existing project rules and install only skills, use the skills-only
 installer. To refresh project rules without touching user-level global rules,
 use `--skip-global`.
@@ -182,9 +197,30 @@ use `--skip-global`.
 ## Git Commit Gate
 
 The installed global rules require the agent to run a commit gate before it
-creates a commit. The required order is review staged and unstaged changes, run every relevant test against staged commit content without relying on unstaged fixes, archive completed OpenSpec changes after verification, then `git commit`.
-Blocking review findings or test failures must be fixed before commit, or
-explicitly reported when unresolved.
+creates a commit. A commit request is a commit-gate request, not commit permission:
+
+Git Commit Gate Is Two-Phase:
+
+1. Phase 1 prepares the gate: review changes, run relevant tests against staged content,
+   report OpenSpec archive blockers, always show the review log and test results,
+   ask for `commit`, `commit & archive`, or `do nothing`, then ask and stop.
+2. Phase 2 acts only when the latest message explicitly selects one of those choices.
+
+Commit Gate Override: the agent runs the full gate every time unless the
+immediately previous assistant message already showed the complete gate result.
+Even then, it may act only when the latest message explicitly selects a choice,
+the staged diff fingerprint has not changed, and no new unstaged changes affect
+the staged files.
+
+Staged Fingerprint records `git diff --cached --name-status`,
+`git diff --cached --stat`, `git status --short`, and test commands/results.
+Before acting, the agent re-checks status and staged file names; changed staged
+sets rerun the gate.
+
+Finding clarification is not a choice; after a clarification, the agent restates
+the gate result and asks again. An unarchived active OpenSpec change is an
+OpenSpec archive decision point. Blocking findings, test failures, or unresolved
+archive blockers stop the commit.
 
 This is an agent workflow requirement, not a Git hook. If you run `git commit`
 yourself in a terminal, Git will not automatically enforce these rules.

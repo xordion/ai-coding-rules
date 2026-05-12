@@ -10,6 +10,7 @@ PROFILE="default"
 AGENT_TARGET="codex"
 SKILLS_TARGET="auto"
 INSTALL_GLOBAL="auto"
+UPDATE_MODE=false
 RAW_BASE_URL="${AI_CODING_RULES_RAW_BASE_URL:-https://raw.githubusercontent.com/xordion/ai-coding-rules/main}"
 REMOTE_ROOT_DIR=""
 
@@ -25,6 +26,7 @@ Options:
   --skills-target TARGET    project, user, none, or auto. Defaults to auto.
   --raw-base-url URL        Raw file base URL for curl-based installs.
   --skip-global             Do not install Codex user-level global rules.
+  --update                  Update installed project config by backing up and replacing generated files.
 EOF
 }
 
@@ -97,6 +99,11 @@ install_source_file() {
 
   if [[ -f "$destination_path" ]]; then
     backup_if_exists "$destination_path"
+    if [[ "$UPDATE_MODE" == true ]]; then
+      cp "$source_path" "$destination_path"
+      echo "$create_message: $destination_path"
+      return
+    fi
     append_section_separator "$destination_path"
     cat "$source_path" >> "$destination_path"
     echo "$append_message: $destination_path"
@@ -123,6 +130,11 @@ install_project_agents() {
 
   if [[ -f "$destination_path" ]]; then
     backup_if_exists "$destination_path"
+    if [[ "$UPDATE_MODE" == true ]]; then
+      render_project_agents_content > "$destination_path"
+      echo "Updated project rules: $destination_path"
+      return
+    fi
     append_section_separator "$destination_path"
     render_project_agents_content >> "$destination_path"
     echo "Appended project rules: $destination_path"
@@ -160,6 +172,11 @@ install_generated_content() {
 
   if [[ -f "$destination_path" ]]; then
     backup_if_exists "$destination_path"
+    if [[ "$UPDATE_MODE" == true ]]; then
+      "$renderer" > "$destination_path"
+      echo "$create_message: $destination_path"
+      return
+    fi
     append_section_separator "$destination_path"
     "$renderer" >> "$destination_path"
     echo "$append_message: $destination_path"
@@ -245,6 +262,10 @@ while [[ $# -gt 0 ]]; do
       INSTALL_GLOBAL=false
       shift
       ;;
+    --update)
+      UPDATE_MODE=true
+      shift
+      ;;
     -h|--help)
       usage
       exit 0
@@ -280,6 +301,10 @@ if ! has_repository_files; then
 fi
 
 mkdir -p "$PROJECT_ROOT"
+
+if [[ "$UPDATE_MODE" == true && "$INSTALL_GLOBAL" == auto ]]; then
+  INSTALL_GLOBAL=false
+fi
 
 if [[ "$INSTALL_GLOBAL" == auto ]]; then
   if agent_enabled codex; then

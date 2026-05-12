@@ -36,9 +36,51 @@
 ## Git Commit Gate
 
 - This gate is an agent workflow requirement, not an automatic Git hook.
-- When asked to commit, run the gate in order: review staged and unstaged changes for bugs, regressions, missing tests, unsafe behavior, and rule violations; run every relevant test against the staged commit content without relying on unstaged fixes; archive any completed OpenSpec change after verification; then run `git commit`.
-- Fix blocking findings before committing, or explicitly report why they remain unresolved.
-- Do not commit when tests or review findings indicate the change is not ready.
+- Treat any request containing `commit`, `git commit`, `提交`, or similar as a commit-gate request, not commit permission.
+
+## Commit Gate Override
+
+- Run the full gate every time a commit is requested unless the immediately previous assistant message already showed the review log, test results, OpenSpec archive status, and the exact three choices.
+- Even after a complete immediately previous gate, commit only when the latest user message explicitly selects `commit`, the staged diff fingerprint has not changed, and no new unstaged changes affect the staged files.
+- If any condition is false, rerun the gate and ask again.
+- After showing the gate result, ask and stop.
+
+## Git Commit Gate Is Two-Phase
+
+### Phase 1: Prepare Gate
+
+- Review staged and unstaged changes.
+- Run relevant tests against staged content without relying on unstaged fixes.
+- Report OpenSpec archive blockers.
+- Show review log and test results.
+- Ask for exactly `commit`, `commit & archive`, or `do nothing`.
+- Ask and stop. Do not run `git commit`.
+
+### Phase 2: Act On Explicit Choice
+
+- Commit only when the latest user message explicitly selects `commit`.
+- Archive and commit only when the latest user message explicitly selects `commit & archive`.
+- Do nothing only when the latest user message explicitly selects `do nothing`.
+- Do not commit while blocking findings, test failures, or unresolved archive blockers make the change unready.
+
+## Commit Choice Recognition
+
+- Finding clarification is not a choice.
+- Examples that are not approval: `不是问题`, `这个不用改`, `继续`, `好的`, `looks good`, `resolved`.
+- After such messages, restate the updated gate result and ask the three choices again.
+
+## OpenSpec Commit Archive Rule
+
+- OpenSpec decision point: if an active OpenSpec change is not archived, report it.
+- For `commit & archive`, archive first and rerun OpenSpec validation.
+- For `commit`, mention archive remains pending.
+
+## Staged Fingerprint
+
+- Before asking for a commit choice, record `git diff --cached --name-status`, `git diff --cached --stat`, `git status --short`, and test commands and results.
+- Before executing the chosen action, re-check `git status --short` and `git diff --cached --name-status`.
+- If the staged set changed, rerun the gate and ask again.
+- If new unstaged changes affect staged files, rerun the gate or stop until the staged-only result can be trusted.
 
 ## Logging & Observability
 
